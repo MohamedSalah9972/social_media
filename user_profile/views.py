@@ -1,11 +1,13 @@
 from rest_framework import permissions, status, generics
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework import filters
 from .serializers import ProfileSerializer
 from user_profile.models import Profile
 from users.models import SocialUser, FriendRequest
+from django.core import exceptions
+from rest_framework.exceptions import ValidationError as RestValidationError
 
 
 @api_view(['POST'])
@@ -54,3 +56,44 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
+
+class ProfileCustomFilter:
+    errors = {}
+
+    def filter(self, queryset, query_params):
+        self.errors.clear()
+        for key in query_params:
+            try:
+                queryset = queryset.filter(**{key: query_params[key]})  # is this the best optimized queries?
+            except exceptions.ValidationError as e:
+                self.errors[key] = list(e)
+
+        if self.errors:
+            raise RestValidationError(self.errors)
+
+        return queryset
+
+
+class GetCustomFilter(generics.ListAPIView, ProfileCustomFilter):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.AllowAny]
+    model = Profile
+
+    def get_queryset(self):
+        return Profile.objects.all()
+
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    # search_fields = ['user__username', 'user__date_joined']
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter(self.get_queryset(), request.query_params)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class ProfileRestBackendFilters(generics.ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    model = Profile
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['user__date_joined', 'name']
