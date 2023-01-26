@@ -1,11 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.shortcuts import render
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-
+from .serializers import ProfileSerializer
 from user_profile.models import Profile
 from users.models import SocialUser, FriendRequest
 
@@ -35,4 +33,25 @@ def accept_friend_request(request, pk):
     return Response("Message: Accepted")
 
 
+class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
+    def get_object(self):
+        obj = get_object_or_404(Profile.objects.all(), pk=self.kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    queryset = Profile.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = ProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        profile = get_object_or_404(Profile, user_id=kwargs['pk'])
+        serializer = self.serializer_class(profile, many=False)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
 
