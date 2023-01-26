@@ -8,14 +8,6 @@ class SocialUser(AbstractUser):
     pass
 
 
-class Profile(AbstractUser):
-    user = models.OneToOneField(SocialUser, on_delete=models.CASCADE)
-    friends = models.ManyToManyField("Profile", blank=True)
-
-    def __str__(self):
-        return str(self.user.username)
-
-
 class FriendRequest(TimeStampedModel):
     from_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='from_user', on_delete=models.CASCADE)
     to_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='to_user', on_delete=models.CASCADE)
