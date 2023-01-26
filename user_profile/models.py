@@ -3,7 +3,7 @@ from django.db import models
 from users.models import SocialUser
 
 
-class Profile(AbstractUser):
+class Profile(models.Model):
     user = models.OneToOneField(SocialUser, on_delete=models.CASCADE)
     friends = models.ManyToManyField("Profile", blank=True)
 
