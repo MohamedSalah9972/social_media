@@ -68,6 +68,17 @@ python-versions = ">=3.6"
 Django = ">=3.2"
 
 [[package]]
+name = "django-filter"
+version = "22.1"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "django-model-utils"
 version = "4.3.1"
 description = "Django model mixins and utilities"
@@ -138,7 +149,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "726eb5a9893376ccc6369c72f60eeb7013eece1e5f145ba569552275bc58c6ae"
+content-hash = "bfe22e7c15c665fd9ac9d73f5226f74708a782e616d3de91746bdb8909ccdf59"
 
 [metadata.files]
 asgiref = []
@@ -146,6 +157,7 @@ cffi = []
 cryptography = []
 django = []
 django-extensions = []
+django-filter = []
 django-model-utils = []
 django-rest-knox = [
     {file = "django-rest-knox-4.2.0.tar.gz", hash = "sha256:4595f1dc23d6e41af7939e5f2d8fdaf6ade0a74a656218e7b56683db5566fcc9"},
