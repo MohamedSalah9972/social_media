@@ -41,11 +41,10 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Profile.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    authentication_classes = [TokenAuthentication]
     serializer_class = ProfileSerializer
 
     def get(self, request, *args, **kwargs):
-        profile = get_object_or_404(Profile, user_id=kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=kwargs['pk'])
         serializer = self.serializer_class(profile, many=False)
         return Response(serializer.data)
 
