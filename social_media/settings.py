@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'user_profile',
     'model_utils',
     'rest_framework',
+    'knox',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -95,6 +96,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
     'PAGE_SIZE': 100,
 }
