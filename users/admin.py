@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import SocialUser
 
-# Register your models here.
+class AdminSocialUser(admin.ModelAdmin):
+    pass
+
+admin.site.register(SocialUser, AdminSocialUser)
