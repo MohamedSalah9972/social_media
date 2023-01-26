@@ -38,6 +38,26 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
+name = "djangorestframework"
+version = "3.14.0"
+description = "Web APIs for Django, made easy."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+django = ">=3.0"
+pytz = "*"
+
+[[package]]
+name = "pytz"
+version = "2022.7.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.3"
 description = "A non-validating SQL parser."
@@ -56,11 +76,13 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "720f58fd8f0c219b286a731c73a7c9e8e5cfac3f56bc44a838b36b824bc721fd"
+content-hash = "1d17e91ac8b4c8a01184a24b7af303797434922b14706d6bc22d1d4c87ac6ee5"
 
 [metadata.files]
 asgiref = []
 django = []
 django-model-utils = []
+djangorestframework = []
+pytz = []
 sqlparse = []
 tzdata = []
